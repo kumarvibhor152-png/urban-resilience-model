@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Natural Disaster Resilience Score (NDRS) Model — Rashtriya Raksha University</title>
+  <meta name="description" content="Mathematical Framework for Urban Natural Disaster Resilience Score Analysis — Demonstrating multi-pillar min-max normalization, exponential hazard penalty, and dynamic recovery integrals.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for crystal clear mathematical equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Academic Institutional Bar -->
+  <div class="top-academic-bar">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span class="badge">
+        <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+        Rashtriya Raksha University
+      </span>
+      <span>School of Applied Science, Engineering and Technology &bull; Mathematics Project</span>
+    </div>
+    <div class="authors-strip">
+      <span>Authors: <strong>Ujjawal Kumar</strong> (25014111058031040) & <strong>Kumar Vibhor</strong> (25014111058031018)</span>
+      <span style="opacity: 0.7;">&bull; B.Tech Electronics Engineering &bull; Oct 2026</span>
+    </div>
+  </div>
+
+  <!-- Hero Header -->
+  <header class="hero-section">
+    <div class="hero-content">
+      <div class="title-area">
+        <div class="title-meta-tag">
+          <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+          Mathematical Framework &bull; Urban Disaster Analytics
+        </div>
+        <h1 class="hero-title">Urban Natural Disaster Resilience Score (NDRS)</h1>
+        <p class="hero-subtitle">
+          An interactive scientific simulation platform implementing min-max indicator normalization, 4-pillar weighted capacity aggregation, exponential hazard exposure penalties, and time-dependent recovery integrals.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="btn-open-custom-city">
+          <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+          Add Custom City
+        </button>
+        <button class="btn btn-glass" id="btn-export-report">
+          <i data-lucide="download" style="width: 18px; height: 18px;"></i>
+          Export Analysis
+        </button>
+        <button class="btn btn-glass" id="btn-reset-defaults">
+          <i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i>
+          Reset Model
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live KPI Metrics Strip -->
+  <div class="kpi-grid">
+    <div class="kpi-card" style="--card-accent: var(--accent-cyan);">
+      <div class="kpi-header">
+        <span>Cities Evaluated</span>
+        <i data-lucide="building-2" style="width: 16px; height: 16px; color: var(--accent-cyan);"></i>
+      </div>
+      <div class="kpi-value" id="kpi-cities-count">5</div>
+      <div class="kpi-subtext">Distinct geological archetypes</div>
+    </div>
+
+    <div class="kpi-card" style="--card-accent: var(--accent-indigo);">
+      <div class="kpi-header">
+        <span>Mean Baseline Capacity</span>
+        <i data-lucide="layers" style="width: 16px; height: 16px; color: var(--accent-indigo);"></i>
+      </div>
+      <div class="kpi-value" id="kpi-mean-ci">0.00 <small>/ 1.00</small></div>
+      <div class="kpi-subtext">Composite weighted capacity C&#772;</div>
+    </div>
+
+    <div class="kpi-card" style="--card-accent: var(--accent-rose);">
+      <div class="kpi-header">
+        <span>Mean Hazard Exposure</span>
+        <i data-lucide="flame" style="width: 16px; height: 16px; color: var(--accent-rose);"></i>
+      </div>
+      <div class="kpi-value" id="kpi-mean-hi">0.00 <small>Index</small></div>
+      <div class="kpi-subtext">Multi-hazard frequency & severity H&#772;</div>
+    </div>
+
+    <div class="kpi-card" style="--card-accent: var(--accent-amber);">
+      <div class="kpi-header">
+        <span>Avg Hazard Penalty</span>
+        <i data-lucide="trending-down" style="width: 16px; height: 16px; color: var(--accent-amber);"></i>
+      </div>
+      <div class="kpi-value" id="kpi-mean-penalty">0.0 <small>%</small></div>
+      <div class="kpi-subtext">Reduction via exponential e<sup>-γH</sup></div>
+    </div>
+
+    <div class="kpi-card" style="--card-accent: var(--accent-emerald);">
+      <div class="kpi-header">
+        <span>Mean Restored Capacity</span>
+        <i data-lucide="timer" style="width: 16px; height: 16px; color: var(--accent-emerald);"></i>
+      </div>
+      <div class="kpi-value" id="kpi-mean-recovery">0.00 <small>R(T)</small></div>
+      <div class="kpi-subtext">Average recovery integral over T=30d</div>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs-wrapper">
+    <div class="nav-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="tab-dashboard" role="tab">
+        <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+        Executive Dashboard
+      </button>
+      <button class="tab-btn" data-tab="tab-model-calculator" role="tab">
+        <i data-lucide="sliders" style="width: 18px; height: 18px;"></i>
+        Model Calculator & γ Tuner
+      </button>
+      <button class="tab-btn" data-tab="tab-recovery-dynamics" role="tab">
+        <i data-lucide="trending-up" style="width: 18px; height: 18px;"></i>
+        Disaster Recovery Simulator Q(t)
+      </button>
+      <button class="tab-btn" data-tab="tab-indicator-matrix" role="tab">
+        <i data-lucide="table" style="width: 18px; height: 18px;"></i>
+        Indicator Matrix & Normalizer
+      </button>
+      <button class="tab-btn" data-tab="tab-sensitivity" role="tab">
+        <i data-lucide="bar-chart-2" style="width: 18px; height: 18px;"></i>
+        Sensitivity & Investment Studio
+      </button>
+      <button class="tab-btn" data-tab="tab-clt" role="tab">
+        <i data-lucide="sigma" style="width: 18px; height: 18px;"></i>
+        Central Limit Theorem Lab
+      </button>
+      <button class="tab-btn" data-tab="tab-theory" role="tab">
+        <i data-lucide="book-open" style="width: 18px; height: 18px;"></i>
+        Formulations & References
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 1: EXECUTIVE DASHBOARD ==================== -->
+  <div class="tab-pane active" id="tab-dashboard">
+    <!-- Notice Banner for Rank Inversion -->
+    <div style="background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <i data-lucide="info" style="color: var(--accent-cyan); width: 22px; height: 22px;"></i>
+        <span style="font-size: 0.92rem; color: #e2e8f0;">
+          <strong>Core Project Finding Demonstrated:</strong> High baseline infrastructure capacity alone is insufficient. Due to the exponential hazard penalty \( NDRS_i = C_i e^{-\gamma H_i} \), cities with intense hazard exposure experience severe rank degradation.
+        </span>
+      </div>
+      <span class="badge" style="background: rgba(6, 182, 212, 0.2); color: #38bdf8;">Report Sec. 3 & 5</span>
+    </div>
+
+    <!-- Comparative Visualizations Grid -->
+    <div class="section-grid-2col">
+      <!-- Baseline vs NDRS Grouped Bar Chart -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="bar-chart" style="width: 20px; height: 20px;"></i>
+            Baseline Capacity (\(C_i\)) vs Hazard-Adjusted Score (\(NDRS_i\))
+          </div>
+          <span class="panel-badge">Score Comparison</span>
+        </div>
+        <div class="chart-box chart-box-lg">
+          <canvas id="chart-comparison"></canvas>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;">
+          The green bar illustrates the final resilience score after discounting baseline capacity by external hazard exposure \(e^{-\gamma H_i}\).
+        </div>
+      </div>
+
+      <!-- Radar Chart: 4 Pillars Profile -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="target" style="width: 20px; height: 20px;"></i>
+            Four Pillar Resilience Architecture (\(P_1, P_2, P_3, P_4\))
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-glass btn-sm" id="btn-toggle-all-radar">Toggle All</button>
+          </div>
+        </div>
+        <div class="chart-box chart-box-lg">
+          <canvas id="chart-radar"></canvas>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;">
+          Comparing Infrastructure (P1), Governance (P2), Economic Capacity (P3), and Social-Ecological Buffers (P4).
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Ranking & Comparative Analysis Table -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="award" style="width: 20px; height: 20px;"></i>
+          Comparative City Evaluation & Rank Dynamics
+        </div>
+        <span class="panel-badge">Interactive Table</span>
+      </div>
+      <div class="table-wrapper">
+        <table class="custom-table" id="table-rankings">
+          <thead>
+            <tr>
+              <th>Rank (NDRS)</th>
+              <th>City Profile</th>
+              <th>Pillars (P1-P4)</th>
+              <th>Baseline \(C_i\)</th>
+              <th>Hazard Index \(H_i\)</th>
+              <th>Hazard Penalty</th>
+              <th>Final \(NDRS_i\)</th>
+              <th>Rank Shift</th>
+              <th>Recovery \(R(T)\)</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="table-rankings-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- City Profile Cards Grid -->
+    <div style="margin-top: 32px;">
+      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 14px; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="map-pin" style="color: var(--accent-cyan); width: 18px; height: 18px;"></i>
+        Illustrative City Archetype Profiles
+      </h3>
+      <div class="city-cards-grid" id="city-mini-cards-container">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 2: MODEL CALCULATOR & GAMMA TUNER ==================== -->
+  <div class="tab-pane" id="tab-model-calculator">
+    <div class="section-grid-2col">
+      <!-- Parameter Sliders & Presets -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="sliders-horizontal" style="width: 20px; height: 20px;"></i>
+            Pillar Weightings & Hazard Sensitivity (\(\gamma\))
+          </div>
+          <button class="btn btn-glass btn-sm" id="btn-normalize-weights">Normalize Weights</button>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; display: block; font-weight: 600;">Strategic Weight Presets:</label>
+          <div class="presets-grid">
+            <button class="preset-chip active" data-preset="balanced">Balanced</button>
+            <button class="preset-chip" data-preset="engineering">Engineering</button>
+            <button class="preset-chip" data-preset="governance">Governance</button>
+            <button class="preset-chip" data-preset="ecological">Ecological</button>
+          </div>
+        </div>
+
+        <!-- Pillar Weight Sliders -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #3b82f6;">●</span> P1: Infrastructure Weight (\(w_1\))
+            </span>
+            <span class="control-val" id="val-weight-p1">0.30</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-weight-p1" min="0.05" max="0.70" step="0.01" value="0.30">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #10b981;">●</span> P2: Governance Weight (\(w_2\))
+            </span>
+            <span class="control-val" id="val-weight-p2">0.25</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-weight-p2" min="0.05" max="0.70" step="0.01" value="0.25">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #f59e0b;">●</span> P3: Economic Capacity Weight (\(w_3\))
+            </span>
+            <span class="control-val" id="val-weight-p3">0.25</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-weight-p3" min="0.05" max="0.70" step="0.01" value="0.25">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #8b5cf6;">●</span> P4: Social-Ecological Weight (\(w_4\))
+            </span>
+            <span class="control-val" id="val-weight-p4">0.20</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-weight-p4" min="0.05" max="0.70" step="0.01" value="0.20">
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 24px 0;">
+
+        <!-- Hazard Sensitivity Parameter Slider -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <i data-lucide="gauge" style="width: 16px; height: 16px; color: var(--accent-rose);"></i>
+              Hazard Sensitivity Parameter (\(\gamma\))
+            </span>
+            <span class="control-val" id="val-gamma" style="color: var(--accent-rose);">0.85</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-gamma" min="0.10" max="2.50" step="0.05" value="0.85">
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+            <span>Mild Hazard Penalty (γ = 0.1)</span>
+            <span>Default (γ = 0.85)</span>
+            <span>Severe Punitive Penalty (γ = 2.5)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Step-by-Step KaTeX Equation Evaluator -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="calculator" style="width: 20px; height: 20px;"></i>
+            Live Mathematical Equation Evaluator
+          </div>
+          <select id="select-calc-city" class="form-input" style="padding: 4px 10px; font-size: 0.82rem; width: auto;">
+            <!-- City options -->
+          </select>
+        </div>
+
+        <!-- KaTeX Math Box 1: Baseline Capacity -->
+        <div class="math-card">
+          <div class="math-card-badge">Step 1 & 2: Baseline Capacity</div>
+          <div class="math-content" id="math-box-ci">
+            $$C_i = \sum_{j=1}^m w_j z_{ij} = w_1 P_1 + w_2 P_2 + w_3 P_3 + w_4 P_4$$
+          </div>
+          <div class="math-explanation" id="math-explain-ci">
+            Calculating weighted aggregate across all 4 urban resilience pillars.
+          </div>
+        </div>
+
+        <!-- KaTeX Math Box 2: Hazard Penalty NDRS -->
+        <div class="math-card">
+          <div class="math-card-badge">Step 3: Hazard Adjustment</div>
+          <div class="math-content" id="math-box-ndrs">
+            $$NDRS_i = C_i \cdot e^{-\gamma H_i}$$
+          </div>
+          <div class="math-explanation" id="math-explain-ndrs">
+            Discounting baseline capacity by exponential hazard vulnerability factor.
+          </div>
+        </div>
+
+        <!-- Live Partial Derivatives (Report Page 4 & 5) -->
+        <div style="margin-top: 20px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: #ffffff; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="git-commit" style="width: 16px; height: 16px; color: var(--accent-cyan);"></i>
+            Exact Partial Derivatives (Model Behaviour & Rates of Change)
+          </h4>
+          <div class="derivative-grid">
+            <div class="deriv-box">
+              <span style="font-size: 0.75rem; color: var(--text-secondary);">\(\frac{\partial NDRS}{\partial H}\) (Hazard)</span>
+              <div class="deriv-val val-negative" id="deriv-hazard">-0.0000</div>
+              <small style="font-size: 0.7rem; color: var(--text-muted);">Rate of loss per hazard unit</small>
+            </div>
+            <div class="deriv-box">
+              <span style="font-size: 0.75rem; color: var(--text-secondary);">\(\frac{\partial NDRS}{\partial C}\) (Capacity)</span>
+              <div class="deriv-val val-positive" id="deriv-capacity">+0.0000</div>
+              <small style="font-size: 0.7rem; color: var(--text-muted);">Marginal gain from capacity</small>
+            </div>
+            <div class="deriv-box">
+              <span style="font-size: 0.75rem; color: var(--text-secondary);">\(\frac{\partial NDRS}{\partial \gamma}\) (Sensitivity)</span>
+              <div class="deriv-val val-negative" id="deriv-gamma">-0.0000</div>
+              <small style="font-size: 0.7rem; color: var(--text-muted);">Penalty sensitivity rate</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 3: DISASTER RECOVERY DYNAMICS ==================== -->
+  <div class="tab-pane" id="tab-recovery-dynamics">
+    <div class="section-grid-2col">
+      <!-- Recovery Trajectory Chart -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="line-chart" style="width: 20px; height: 20px;"></i>
+            Dynamic Recovery Trajectory \(Q_i(t) = 1 - L_{0,i} e^{-k_{r,i}(t - t_0)}\)
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-glass btn-sm" id="btn-toggle-recovery-multi">Compare All Cities</button>
+          </div>
+        </div>
+        <div class="chart-box chart-box-lg">
+          <canvas id="chart-recovery"></canvas>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; display: flex; justify-content: space-between;">
+          <span>Shaded integral represents cumulative restored capacity \(R_i(T)\)</span>
+          <span id="label-active-city-recovery">Active: Metro Coastalia</span>
+        </div>
+      </div>
+
+      <!-- Recovery Controls & Integral Metrics -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="settings" style="width: 20px; height: 20px;"></i>
+            Disaster Recovery Parameters & Definite Integral
+          </div>
+          <select id="select-recovery-city" class="form-input" style="padding: 4px 10px; font-size: 0.82rem; width: auto;">
+            <!-- City options -->
+          </select>
+        </div>
+
+        <!-- Initial Loss L0 Slider -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <i data-lucide="zap-off" style="width: 16px; height: 16px; color: var(--accent-rose);"></i>
+              Initial Disruption / Loss Fraction (\(L_{0,i}\))
+            </span>
+            <span class="control-val" id="val-recovery-l0" style="color: var(--accent-rose);">0.62</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-recovery-l0" min="0.10" max="0.95" step="0.01" value="0.62">
+          <small style="font-size: 0.75rem; color: var(--text-muted);">Fraction of municipal functionality lost immediately at time \(t_0\).</small>
+        </div>
+
+        <!-- Recovery Rate kr Slider -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <i data-lucide="fast-forward" style="width: 16px; height: 16px; color: var(--accent-emerald);"></i>
+              Recovery Speed Parameter (\(k_{r,i}\))
+            </span>
+            <span class="control-val" id="val-recovery-kr" style="color: var(--accent-emerald);">0.12</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-recovery-kr" min="0.02" max="0.50" step="0.01" value="0.12">
+          <small style="font-size: 0.75rem; color: var(--text-muted);">Exponential rate parameter governed by governance dispatch, financial reserves, and repair speed.</small>
+        </div>
+
+        <!-- Evaluation Period T Slider -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <i data-lucide="calendar" style="width: 16px; height: 16px; color: var(--accent-cyan);"></i>
+              Evaluation Horizon (\(T\))
+            </span>
+            <span class="control-val" id="val-recovery-t" style="color: var(--accent-cyan);">30 Days</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-recovery-t" min="10" max="180" step="5" value="30">
+        </div>
+
+        <!-- KaTeX Definite Integral Display -->
+        <div class="math-card">
+          <div class="math-card-badge">Average Restored Capacity Integral</div>
+          <div class="math-content" id="math-box-integral">
+            $$R_i(T) = \frac{1}{T} \int_{t_0}^{t_0+T} Q_i(t) dt = 1 - \frac{L_{0,i}}{k_{r,i} T} \left(1 - e^{-k_{r,i} T}\right)$$
+          </div>
+          <div class="math-explanation" id="math-explain-integral">
+            Definite integral evaluating the average functional service level over the post-disaster evaluation window.
+          </div>
+        </div>
+
+        <!-- Recovery Milestones Cards -->
+        <div class="derivative-grid" style="margin-top: 14px;">
+          <div class="deriv-box">
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">Avg Restored \(R(T)\)</span>
+            <div class="deriv-val val-positive" id="stat-ri-t">0.00</div>
+            <small style="font-size: 0.7rem; color: var(--text-muted);">Definite Integral Result</small>
+          </div>
+          <div class="deriv-box">
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">Time to 90% (\(t_{90}\))</span>
+            <div class="deriv-val" id="stat-t90" style="color: var(--accent-amber);">0.0 d</div>
+            <small style="font-size: 0.7rem; color: var(--text-muted);">Substantial recovery</small>
+          </div>
+          <div class="deriv-box">
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">Initial Speed \(\frac{dQ}{dt}\)</span>
+            <div class="deriv-val" id="stat-dq-dt" style="color: var(--accent-cyan);">0.000</div>
+            <small style="font-size: 0.7rem; color: var(--text-muted);">Peak recovery slope</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 4: INDICATOR MATRIX & MIN-MAX NORMALIZER ==================== -->
+  <div class="tab-pane" id="tab-indicator-matrix">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="layers" style="width: 20px; height: 20px;"></i>
+          Underlying Multi-Indicator Matrix & Min–Max Normalization
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+          Directly edit any city metric in the table below to see the entire model update instantaneously.
+        </div>
+      </div>
+
+      <!-- Formula Note -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+        <div class="math-card" style="margin-bottom: 0;">
+          <div class="math-card-badge" style="background: #10b981;">Positive Indicator (Higher is Better)</div>
+          <div class="math-content">
+            $$z_{ij} = \frac{x_{ij} - x_j^{\min}}{x_j^{\max} - x_j^{\min}}$$
+          </div>
+        </div>
+        <div class="math-card" style="margin-bottom: 0;">
+          <div class="math-card-badge" style="background: #f43f5e;">Negative Indicator (Lower is Better)</div>
+          <div class="math-content">
+            $$z_{ij} = \frac{x_j^{\max} - x_{ij}}{x_j^{\max} - x_j^{\min}}$$
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="custom-table" id="table-indicator-matrix">
+          <thead>
+            <tr>
+              <th>Pillar</th>
+              <th>Indicator Name</th>
+              <th>Type / Unit</th>
+              <th>Bounds [Min, Max]</th>
+              <th>Metro Coastalia</th>
+              <th>Riverside Haven</th>
+              <th>Seismic Foothills</th>
+              <th>Indus Apex</th>
+              <th>Verdant Valley</th>
+            </tr>
+          </thead>
+          <tbody id="table-indicator-body">
+            <!-- Dynamically generated with editable inputs -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 5: SENSITIVITY & INVESTMENT STUDIO ==================== -->
+  <div class="tab-pane" id="tab-sensitivity">
+    <div class="section-grid-2col">
+      <!-- Sensitivity Tornado Chart -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
+            Resilience Gain by Pillar: \(\Delta NDRS_i = NDRS_i^{\text{new}} - NDRS_i^{\text{original}}\)
+          </div>
+          <span class="panel-badge">Marginal Gain</span>
+        </div>
+        <div class="chart-box chart-box-lg">
+          <canvas id="chart-sensitivity"></canvas>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;">
+          Quantifies the resilience boost achieved by an equivalent +15% capacity investment into each specific pillar.
+        </div>
+      </div>
+
+      <!-- What-if Municipal Budget Investment Simulator -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="dollar-sign" style="width: 20px; height: 20px;"></i>
+            What-If Municipal Investment Studio
+          </div>
+          <select id="select-sensitivity-city" class="form-input" style="padding: 4px 10px; font-size: 0.82rem; width: auto;">
+            <!-- City options -->
+          </select>
+        </div>
+
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">
+          Simulate allocating a <strong>$100M Disaster Preparedness Fund</strong> across the 4 pillars to determine optimal capital efficiency:
+        </p>
+
+        <!-- Budget Allocation Sliders -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #3b82f6;">●</span> P1: Infrastructure Hardening Fund
+            </span>
+            <span class="control-val" id="val-invest-p1">$25M</span>
+          </div>
+          <input type="range" class="custom-range invest-slider" id="slider-invest-p1" min="0" max="100" step="5" value="25">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #10b981;">●</span> P2: Early Warning & Governance Tech
+            </span>
+            <span class="control-val" id="val-invest-p2">$25M</span>
+          </div>
+          <input type="range" class="custom-range invest-slider" id="slider-invest-p2" min="0" max="100" step="5" value="25">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #f59e0b;">●</span> P3: Insurance & Emergency Reserves
+            </span>
+            <span class="control-val" id="val-invest-p3">$25M</span>
+          </div>
+          <input type="range" class="custom-range invest-slider" id="slider-invest-p3" min="0" max="100" step="5" value="25">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <span style="color: #8b5cf6;">●</span> P4: Sponge Wetlands & Community Drills
+            </span>
+            <span class="control-val" id="val-invest-p4">$25M</span>
+          </div>
+          <input type="range" class="custom-range invest-slider" id="slider-invest-p4" min="0" max="100" step="5" value="25">
+        </div>
+
+        <div style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 16px; margin-top: 16px; border: 1px solid var(--border-subtle);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Projected New Resilience Score:</span>
+            <span class="deriv-val val-positive" id="val-projected-ndrs" style="font-size: 1.3rem;">0.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Total Net Gain (\(\Delta NDRS\)):</span>
+            <span class="deriv-val val-positive" id="val-projected-delta">+0.00 (+0.0%)</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-apply-investment" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          Commit Municipal Investment Strategy
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 6: CENTRAL LIMIT THEOREM LAB ==================== -->
+  <div class="tab-pane" id="tab-clt">
+    <div class="panel" style="margin-bottom: 24px;">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="sigma" style="width: 20px; height: 20px;"></i>
+          Central Limit Theorem (CLT) & Indicator Sampling Verification (Report Page 2)
+        </div>
+        <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Statistical Rigor</span>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--text-secondary); max-width: 960px; line-height: 1.6;">
+        Page 2 of the report highlights the Central Limit Theorem: as urban indicator surveys are averaged across multiple municipal wards and sensor nodes, the standardized sample mean converges in distribution to the standard normal distribution:
+        $$\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i, \quad Z = \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \xrightarrow{d} N(0, 1)$$
+        This mathematically justifies using composite indicators even when localized disaster damages follow highly skewed or bimodal distributions.
+      </p>
+    </div>
+
+    <div class="section-grid-2col">
+      <!-- CLT Simulation Chart -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="activity" style="width: 20px; height: 20px;"></i>
+            Standardized Sample Mean Distribution \(Z \sim N(0, 1)\)
+          </div>
+          <span class="panel-badge">Empirical vs Normal</span>
+        </div>
+        <div class="chart-box chart-box-lg">
+          <canvas id="chart-clt"></canvas>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;">
+          Green curve: Theoretical Standard Normal \(N(0, 1)\). Purple bars: Empirical sample mean distribution over 1,000 sampling runs.
+        </div>
+      </div>
+
+      <!-- CLT Simulator Controls -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="sliders" style="width: 20px; height: 20px;"></i>
+            CLT Sampling Parameters
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-run-clt">
+            <i data-lucide="play" style="width: 14px; height: 14px;"></i>
+            Resample Now
+          </button>
+        </div>
+
+        <!-- Sample Size n Slider -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">
+              <i data-lucide="hash" style="width: 16px; height: 16px; color: var(--accent-cyan);"></i>
+              Ward Sample Size (\(n\))
+            </span>
+            <span class="control-val" id="val-clt-n">30</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-clt-n" min="2" max="250" step="1" value="30">
+          <small style="font-size: 0.75rem; color: var(--text-muted);">Notice how small sample sizes (\(n < 5\)) reflect the skewed original population, but as \(n \ge 30\), the distribution conforms tightly to the Gaussian bell curve.</small>
+        </div>
+
+        <!-- Underlying Population Distribution -->
+        <div class="control-group">
+          <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; display: block;">
+            Underlying Population Distribution:
+          </label>
+          <select id="select-clt-pop" class="form-input" style="width: 100%;">
+            <option value="skewed">Heavily Skewed Disaster Damage (Exponential-tail)</option>
+            <option value="bimodal">Bimodal Urban Vulnerability (Slums vs Fortified Towers)</option>
+            <option value="uniform">Uniform Random Distribution</option>
+          </select>
+        </div>
+
+        <!-- Number of Trials -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Simulation Iterations (\(N_{\text{trials}}\))</span>
+            <span class="control-val" id="val-clt-trials">1,000</span>
+          </div>
+          <input type="range" class="custom-range" id="slider-clt-trials" min="200" max="3000" step="100" value="1000">
+        </div>
+
+        <!-- Mathematical Statistics Summary -->
+        <div class="derivative-grid" style="margin-top: 20px;">
+          <div class="deriv-box">
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">Theoretical SE (\(\sigma/\sqrt{n}\))</span>
+            <div class="deriv-val" id="stat-clt-theor-se" style="color: var(--accent-cyan);">0.00</div>
+          </div>
+          <div class="deriv-box">
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">Empirical SE (\(s_{\bar{X}}\))</span>
+            <div class="deriv-val" id="stat-clt-emp-se" style="color: var(--accent-emerald);">0.00</div>
+          </div>
+          <div class="deriv-box">
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">Mean Convergence</span>
+            <div class="deriv-val" id="stat-clt-mean" style="color: var(--accent-amber);">0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 7: FORMULATIONS & REFERENCES ==================== -->
+  <div class="tab-pane" id="tab-theory">
+    <div class="panel" style="margin-bottom: 24px;">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="file-text" style="width: 20px; height: 20px;"></i>
+          Full Mathematical Modeling Framework
+        </div>
+        <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">Report Architecture</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 24px; color: #cbd5e1; line-height: 1.7;">
+        <div>
+          <h4 style="color: #ffffff; font-size: 1.1rem; margin-bottom: 8px;">1. Indicator Normalization</h4>
+          <p>Since resilience indicators use heterogeneous units (percentages, monetary loss, emergency minutes), min-max transformation scales every parameter to a bounded dimensionless domain \(z_{ij} \in [0, 1]\):</p>
+          <div class="math-card" style="margin: 12px 0;">
+            <div class="math-content">
+              $$z_{ij} = \frac{x_{ij} - x_j^{\min}}{x_j^{\max} - x_j^{\min}} \quad \text{(Positive)}, \qquad z_{ij} = \frac{x_j^{\max} - x_{ij}}{x_j^{\max} - x_j^{\min}} \quad \text{(Negative)}$$
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="color: #ffffff; font-size: 1.1rem; margin-bottom: 8px;">2. Baseline Capacity Aggregation</h4>
+          <p>The four fundamental pillars—Infrastructure (\(P_1\)), Governance (\(P_2\)), Economy (\(P_3\)), and Social-Ecological Buffers (\(P_4\))—are aggregated using normalized weights:</p>
+          <div class="math-card" style="margin: 12px 0;">
+            <div class="math-content">
+              $$C_i = \sum_{j=1}^m w_j z_{ij}, \quad \text{where } \sum_{j=1}^m w_j = 1, \quad C_i \in [0, 1]$$
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="color: #ffffff; font-size: 1.1rem; margin-bottom: 8px;">3. Exponential Hazard Adjustment</h4>
+          <p>A city's intrinsic capacity is discounted by an exponential penalty reflecting hazard exposure frequency and intensity:</p>
+          <div class="math-card" style="margin: 12px 0;">
+            <div class="math-content">
+              $$NDRS_i = C_i \cdot e^{-\gamma H_i}, \quad \frac{\partial NDRS_i}{\partial H_i} = -\gamma C_i e^{-\gamma H_i} < 0$$
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="color: #ffffff; font-size: 1.1rem; margin-bottom: 8px;">4. Time-Dependent Recovery Dynamics</h4>
+          <p>Post-disaster operational restoration follows a concave exponential return function, whose definite integral provides the mean restored capacity:</p>
+          <div class="math-card" style="margin: 12px 0;">
+            <div class="math-content">
+              $$Q_i(t) = 1 - L_{0,i} e^{-k_{r,i}(t - t_0)}, \qquad R_i(T) = \frac{1}{T}\int_{t_0}^{t_0+T} Q_i(t) dt = 1 - \frac{L_{0,i}}{k_{r,i} T}\left(1 - e^{-k_{r,i} T}\right)$$
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic References -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="library" style="width: 20px; height: 20px;"></i>
+          Academic Citations & Literature Cited in Report
+        </div>
+        <span class="panel-badge">Bibliography</span>
+      </div>
+      <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem; color: var(--text-secondary);">
+        <li><strong>Bruneau, M. et al. (2003).</strong> A framework to quantitatively assess and enhance the seismic resilience of communities. <em>Earthquake Spectra</em>, 19(4), 733–752.</li>
+        <li><strong>Cutter, S. L., Burton, C. G., & Emrich, C. T. (2010).</strong> Disaster resilience indicators for benchmarking baseline conditions. <em>Journal of Homeland Security and Emergency Management</em>, 7(1).</li>
+        <li><strong>Shannon, C. E. (1948).</strong> A mathematical theory of communication. <em>The Bell System Technical Journal</em>, 27, 379–423.</li>
+        <li><strong>United Nations Office for Disaster Risk Reduction (UNDRR). (2015).</strong> <em>Sendai Framework for Disaster Risk Reduction 2015–2030</em>.</li>
+        <li><strong>United Nations Office for Disaster Risk Reduction (UNDRR).</strong> <em>Disaster Resilience Scorecard for Cities</em>.</li>
+        <li><strong>Montgomery, D. C., & Runger, G. C. (2018).</strong> <em>Applied Statistics and Probability for Engineers</em>, 7th ed. Wiley.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD CUSTOM CITY ==================== -->
+  <div class="modal-overlay" id="modal-custom-city">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-title">Add Custom Urban Profile</div>
+        <button class="modal-close" id="btn-close-modal">&times;</button>
+      </div>
+
+      <form id="form-custom-city">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="custom-name">City Name</label>
+            <input type="text" class="form-input" id="custom-name" required placeholder="e.g. Neo Metropolis">
+          </div>
+          <div class="form-group">
+            <label for="custom-archetype">Archetype</label>
+            <input type="text" class="form-input" id="custom-archetype" required placeholder="e.g. Coastal Peninsula Port">
+          </div>
+          <div class="form-group">
+            <label for="custom-hazard">Hazard Exposure Index \(H_i\) (0.0 to 1.0)</label>
+            <input type="number" step="0.01" min="0" max="1" class="form-input" id="custom-hazard" required value="0.55">
+          </div>
+          <div class="form-group">
+            <label for="custom-loss">Initial Loss \(L_0\) (0.0 to 0.95)</label>
+            <input type="number" step="0.01" min="0.05" max="0.95" class="form-input" id="custom-loss" required value="0.50">
+          </div>
+          <div class="form-group">
+            <label for="custom-rate">Recovery Rate \(k_r\) (0.02 to 0.50)</label>
+            <input type="number" step="0.01" min="0.02" max="0.50" class="form-input" id="custom-rate" required value="0.15">
+          </div>
+          <div class="form-group">
+            <label for="custom-color">Theme Color</label>
+            <input type="color" class="form-input" id="custom-color" value="#06b6d4" style="height: 42px; padding: 2px;">
+          </div>
+        </div>
+
+        <h4 style="font-size: 1rem; font-weight: 700; margin: 20px 0 10px; color: #ffffff;">Indicator Baseline Inputs</h4>
+        <div class="form-grid" id="custom-indicators-inputs">
+          <!-- Dynamically generated indicator input fields -->
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="btn btn-glass" id="btn-cancel-custom-city">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save & Evaluate City</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <p><strong>Rashtriya Raksha University</strong> &bull; School of Applied Science, Engineering and Technology</p>
+        <p style="margin-top: 4px;">Mathematics Project: Mathematical Framework for Urban Natural Disaster Resilience Score Analysis</p>
+      </div>
+      <div class="footer-links">
+        <span>Team: Ujjawal Kumar &amp; Kumar Vibhor (Oct 2026)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
